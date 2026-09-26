@@ -59,7 +59,7 @@ class HomeAssistantAirtagImporter < Formula
     system libexec/"venv/bin/python", "-c",
            "from findmy import FindMyAccessory; import sys; a = FindMyAccessory.from_json(sys.argv[1]); assert a.to_json()['alignment_index'] == 96; assert a.master_key == bytes([1])*28",
            outputs.first
-    assert_path_not_exist testpath/"keystore.plist"
+    refute_path_exists testpath/"keystore.plist"
     output = shell_output("#{bin}/home-assistant-airtag-importer --diagnose #{testpath}/missing.json 2>&1", 1)
     assert_match "cannot read input", output
     refute_match "Install requirements-diagnostics", output
