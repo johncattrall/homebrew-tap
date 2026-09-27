@@ -1,9 +1,9 @@
 class Hatag < Formula
   desc "Tag export, conversion, and diagnostics for Home Assistant"
   homepage "https://github.com/johncattrall/hatag"
-  url "https://github.com/johncattrall/hatag/releases/download/v0.1.4/hatag-0.1.4-arm64-macos.tar.gz"
-  sha256 "f1b926bac480d8a5879d9f0439c5bf588edc9259e0a45568320e9ee06fd1a3a2"
-  version "0.1.4"
+  url "https://github.com/johncattrall/hatag/releases/download/v0.1.5/hatag-0.1.5-arm64-macos.tar.gz"
+  sha256 "5bbd57b1e946e8e123f562a1bff47fd379527a194c13bf8a656955fb1d51b680"
+  version "0.1.5"
 
   depends_on arch: :arm64
   depends_on macos: :sonoma
