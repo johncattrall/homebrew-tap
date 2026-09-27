@@ -1,9 +1,9 @@
 class Hatag < Formula
   desc "Tag export, conversion, and diagnostics for Home Assistant"
   homepage "https://github.com/johncattrall/hatag"
-  url "https://github.com/johncattrall/hatag/releases/download/v0.1.2/hatag-0.1.2-arm64-macos.tar.gz"
-  sha256 "9d4cf4329fb0b5521eff0da18e631d8a521d8bff5221d74d070627716794de91"
-  version "0.1.2"
+  url "https://github.com/johncattrall/hatag/releases/download/v0.1.3/hatag-0.1.3-arm64-macos.tar.gz"
+  sha256 "72a46e9a79f46005197b829acd8c192480c867461354d8bb04439bd9b7455f04"
+  version "0.1.3"
 
   depends_on arch: :arm64
   depends_on macos: :sonoma
@@ -33,6 +33,8 @@ class Hatag < Formula
       Diagnostics are read-only unless --save-alignment is supplied.
       Exported files and backups contain private tracking keys; keep them private.
       This binary package is for Apple Silicon macOS 14 or newer.
+      Default state and exports are under ~/Library/Application Support/hatag.
+      Use --state-dir or --output-dir to override; do not run hatag with sudo.
     EOS
   end
 
