@@ -1,9 +1,9 @@
 class Hatag < Formula
   desc "Tag export, conversion, and diagnostics for Home Assistant"
   homepage "https://github.com/johncattrall/hatag"
-  url "https://github.com/johncattrall/hatag/releases/download/v0.1.3/hatag-0.1.3-arm64-macos.tar.gz"
-  sha256 "72a46e9a79f46005197b829acd8c192480c867461354d8bb04439bd9b7455f04"
-  version "0.1.3"
+  url "https://github.com/johncattrall/hatag/releases/download/v0.1.4/hatag-0.1.4-arm64-macos.tar.gz"
+  sha256 "f1b926bac480d8a5879d9f0439c5bf588edc9259e0a45568320e9ee06fd1a3a2"
+  version "0.1.4"
 
   depends_on arch: :arm64
   depends_on macos: :sonoma
@@ -33,8 +33,9 @@ class Hatag < Formula
       Diagnostics are read-only unless --save-alignment is supplied.
       Exported files and backups contain private tracking keys; keep them private.
       This binary package is for Apple Silicon macOS 14 or newer.
-      Default state and exports are under ~/Library/Application Support/hatag.
-      Use --state-dir or --output-dir to override; do not run hatag with sudo.
+      Exports default to the current directory; override with --output-dir.
+      Authentication state stays under ~/Library/Application Support/hatag/state.
+      If output is not writable, change directories; do not run hatag with sudo.
     EOS
   end
 
@@ -58,6 +59,13 @@ class Hatag < Formula
     outputs = (testpath/"converted").glob("*.findmy.json")
     assert_equal 1, outputs.length
     assert_equal JSON.parse(JSON.generate(fixture)), JSON.parse(outputs.first.read)
+    (testpath/"default-output").mkpath
+    (testpath/"default-output").chmod 0755
+    cd testpath/"default-output" do
+      system bin/"hatag", "--convert=home-assistant", testpath/"input.json"
+      assert_equal 1, Dir["*.findmy.json"].length
+    end
+    assert_equal 0755, (testpath/"default-output").stat.mode & 0777
     system libexec/"venv/bin/python", "-c",
            "from findmy import FindMyAccessory; import sys; a = FindMyAccessory.from_json(sys.argv[1]); assert a.to_json()['alignment_index'] == 96; assert a.master_key == bytes([1])*28",
            outputs.first
