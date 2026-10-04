@@ -1,9 +1,9 @@
 class Hatag < Formula
   desc "Tag export, conversion, and diagnostics for Home Assistant"
   homepage "https://github.com/johncattrall/hatag"
-  url "https://github.com/johncattrall/hatag/releases/download/v0.1.5/hatag-0.1.5-arm64-macos.tar.gz"
-  sha256 "5bbd57b1e946e8e123f562a1bff47fd379527a194c13bf8a656955fb1d51b680"
-  version "0.1.5"
+  url "https://github.com/johncattrall/hatag/releases/download/v0.1.6/hatag-0.1.6-arm64-macos.tar.gz"
+  sha256 "3dc8ad8589a837f4cb67d0d4e696cb8a3f99837791e00eb7a094c41132337974"
+  version "0.1.6"
 
   depends_on arch: :arm64
   depends_on macos: :sonoma
@@ -59,6 +59,16 @@ class Hatag < Formula
     outputs = (testpath/"converted").glob("*.findmy.json")
     assert_equal 1, outputs.length
     assert_equal JSON.parse(JSON.generate(fixture)), JSON.parse(outputs.first.read)
+    system bin/"hatag", "--convert=home-assistant",
+           "--output-dir", testpath/"converted", testpath/"input.json"
+    assert_equal 1, (testpath/"converted").glob("*.findmy.json").length
+    changed = fixture.merge(alignment_index: 97)
+    (testpath/"input.json").write JSON.generate(changed)
+    system bin/"hatag", "--convert=home-assistant",
+           "--output-dir", testpath/"converted", testpath/"input.json"
+    assert_equal 2, (testpath/"converted").glob("*.findmy.json").length
+    assert_equal JSON.parse(JSON.generate(fixture)), JSON.parse(outputs.first.read)
+    (testpath/"input.json").write JSON.generate(fixture)
     (testpath/"default-output").mkpath
     (testpath/"default-output").chmod 0755
     cd testpath/"default-output" do
