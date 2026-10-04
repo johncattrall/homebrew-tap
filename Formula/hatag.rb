@@ -63,12 +63,12 @@ class Hatag < Formula
            "--output-dir", testpath/"converted", testpath/"input.json"
     assert_equal 1, (testpath/"converted").glob("*.findmy.json").length
     changed = fixture.merge(alignment_index: 97)
-    (testpath/"input.json").write JSON.generate(changed)
+    File.write(testpath/"input.json", JSON.generate(changed))
     system bin/"hatag", "--convert=home-assistant",
            "--output-dir", testpath/"converted", testpath/"input.json"
     assert_equal 2, (testpath/"converted").glob("*.findmy.json").length
     assert_equal JSON.parse(JSON.generate(fixture)), JSON.parse(outputs.first.read)
-    (testpath/"input.json").write JSON.generate(fixture)
+    File.write(testpath/"input.json", JSON.generate(fixture))
     (testpath/"default-output").mkpath
     (testpath/"default-output").chmod 0755
     cd testpath/"default-output" do
